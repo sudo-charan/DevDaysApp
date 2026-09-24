@@ -51,6 +51,8 @@ export async function getAllGameIds(db: Database): Promise<number[]> {
 }
 ```
 
+- Every exported function in `db/` and `src/lib/` must have a TSDoc/JSDoc comment immediately above its declaration. Describe the function's purpose, each parameter (including the injectable `db` argument), and the return value. Keep comments focused on intent and the contract; do not restate the implementation.
+- Keep TSDoc current when changing a function's behavior. An outdated comment is a defect: update it or remove it in the same change.
 - Always `order by` a stable column (title) so static builds are deterministic.
 - Map raw rows to the app-facing `Game`/`Publisher`/`Category` types in one place; don't leak Drizzle row shapes into components.
 - Keep ordering/lookup logic in `games.ts`, not in pages.
@@ -70,3 +72,10 @@ Node.js 22.13 or later is required because the data layer uses the built-in `nod
 ## Type checking
 
 The data layer (`db/**/*.ts`, `src/lib/*.ts`) is type-checked by `npm run typecheck`, which runs the native **TypeScript 7** compiler (`tsgo`, from `@typescript/native-preview`) against `tsconfig.tsgo.json`. Keep helpers exported with explicit parameter and return types so `tsgo` can verify them. Linting is unaffected — ESLint + `typescript-eslint` still run on the classic `typescript` package.
+
+## TypeScript style and comments
+
+- Use the repository's existing TypeScript formatting: two-space indentation, double-quoted strings, semicolons, trailing commas in multiline literals, and one declaration per line.
+- Prefer named interfaces for public object contracts and `import type` for type-only imports.
+- ESLint enforces explicit types at exported module boundaries in this directory. Do not bypass that rule with broad casts or `eslint-disable` comments; make the signature precise instead.
+- Comments should explain why a transformation, ordering rule, compatibility choice, or other non-obvious decision exists. Do not add comments that merely narrate the next line of code.

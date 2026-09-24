@@ -40,4 +40,12 @@ export default [
       parser: tseslint.parser,
     },
   },
+
+  // Public data-layer APIs must remain self-describing and type-safe.
+  {
+    files: ["db/**/*.ts", "src/lib/*.ts"],
+    rules: {
+      "@typescript-eslint/explicit-module-boundary-types": "error",
+    },
+  },
 ];
